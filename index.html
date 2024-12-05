@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Korom.io Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* ------------------- CSS Reset ------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ------------------- Variables ------------------- */
+        :root {
+            --BGreg: 225, 245, 225, 0.95;
+            --BGcorrect: 205, 205, 255, 1;
+            --BGBlack: #000;
+            --koromlight: rgb(229, 83, 52);
+            --button-bg: rgba(238, 180, 185, 0.8);
+            --button-border: rgb(100, 70, 170);
+            --button-hover-border: rgb(60, 30, 130);
+            --header-bg: rgba(143, 176, 163, 0.9);
+            --header-border: rgb(123, 123, 193);
+        }
+
+        /* ------------------- Global Styles ------------------- */
+        body {
+            background-color: rgba(var(--BGreg));
+            font-family: 'Roboto Mono', monospace;
+            text-align: center;
+            color: var(--BGBlack);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: rgba(var(--header-bg));
+            border: 3px solid var(--header-border);
+            padding: 20px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        /* korom Image */
+        #korom-zone {
+            position: absolute;
+            top: 80px;
+            right: 80px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #korom-zone img {
+            width: 300px;
+        }
+
+        /* Main Box */
+        #game-container {
+            background-color: rgba(var(--BGreg));
+            border: 3px solid var(--header-border);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Tabs */
+        .tab {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            border-radius: 5px 5px 0 0;
+            font-size: 1.2em;
+        }
+
+        .tab.active {
+            background-color: #ffffff;
+            border-bottom: 2px solid #ffffff;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Common Elements */
+        #korom, #computer-korom {
+            width: 150px;
+            margin: 20px auto;
+            display: none;
+        }
+
+        #message, #computer-message {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+
+        #input-section, #computer-input-section {
+            margin: 20px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 150px;
+            border: 2px solid var(--button-border);
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: var(--button-bg);
+            padding: 10px 20px;
+            font-size: 1em;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid var(--button-border);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            border: 2px solid var(--button-hover-border);
+            font-weight: bold;
+        }
+
+        /* Guesses List */
+        #guesses, #computer-guesses {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        /* Computer Guessing Buttons */
+        #computer-button-box {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            #game-container {
+                width: 95%;
+            }
+
+            input[type="number"] {
+                width: 100px;
+            }
+
+            button {
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            #korom-zone img {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Korom.io Number Guessing Game</h1>
+        <div id="korom-zone">
+            <img src="https://raw.githubusercontent.com/joaobarroso6/joaobarroso6/main/Simon.png" alt="korom">
+            this guys is the Korom
+        </div>
+    </header>
+    <div id="game-container">
+        <!-- Tabs -->
+        <div>
+            <div class="tab active" id="user-guess-tab">Guess the Number</div>
+            <div class="tab" id="computer-guess-tab">Let Computer Guess</div>
+        </div>
+        <!-- User Guessing Content -->
+        <div id="user-guess-content" class="tab-content active">
+            <img id="korom" src="https://i.imgur.com/Jb1aX1P.png" alt="korom" class="hidden">
+            <div id="message">Guess a number between 1 and 1000</div>
+            <div id="input-section">
+                <input type="number" id="guess" min="1" max="1000" placeholder="Your guess">
+                <button onclick="checkGuess()">Guess</button>
+            </div>
+            <div id="guesses">Your guesses: <span id="guess-list"></span></div>
+        </div>
+        <!-- Computer Guessing Content -->
+        <div id="computer-guess-content" class="tab-content">
+            <img id="computer-korom" src="https://i.imgur.com/Jb1aX1P.png" alt="korom" class="hidden">
+            <div id="computer-message">Think of a number between 1 and 1000, and I'll try to guess it!</div>
+            <div id="computer-number-box" style="font-size: 1.5em; margin: 20px;"></div>
+            <div id="computer-button-box">
+                <button onclick="computerHigher()">Higher</button>
+                <button onclick="computerLower()">Lower</button>
+                <button onclick="computerCorrect()">Correct</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ------------------- Tab Switching -------------------
+        const userGuessTab = document.getElementById('user-guess-tab');
+        const computerGuessTab = document.getElementById('computer-guess-tab');
+        const userGuessContent = document.getElementById('user-guess-content');
+        const computerGuessContent = document.getElementById('computer-guess-content');
+
+        userGuessTab.addEventListener('click', () => {
+            userGuessTab.classList.add('active');
+            computerGuessTab.classList.remove('active');
+            userGuessContent.classList.add('active');
+            computerGuessContent.classList.remove('active');
+        });
+
+        computerGuessTab.addEventListener('click', () => {
+            computerGuessTab.classList.add('active');
+            userGuessTab.classList.remove('active');
+            computerGuessContent.classList.add('active');
+            userGuessContent.classList.remove('active');
+            resetComputerGuessing();
+        });
+
+        // ------------------- User Guessing Mode -------------------
+        let correctNumber = Math.floor(Math.random() * 1000) + 1;
+        const message = document.getElementById('message');
+        const korom = document.getElementById('korom');
+        const guessInput = document.getElementById('guess');
+        const guessList = document.getElementById('guess-list');
+        let userGuesses = [];
+
+        // Verify input on Enter key
+        guessInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkGuess();
+            }
+        });
+
+        function checkGuess() {
+            const guess = parseInt(guessInput.value);
+            if (isNaN(guess) || guess < 1 || guess > 1000) {
+                message.textContent = "Please enter a valid number between 1 and 1000.";
+                return;
+            }
+            userGuesses.push(guess);
+            updateGuessList();
+            if (guess === correctNumber) {
+                message.textContent = "You got it! The korom is happy!";
+                korom.classList.remove('hidden');
+                endUserGuessing();
+            } else if (guess < correctNumber) {
+                message.textContent = "Too low! Try again.";
+            } else {
+                message.textContent = "Too high! Try again.";
+            }
+            guessInput.value = "";
+        }
+
+        function updateGuessList() {
+            guessList.textContent = userGuesses.join(", ");
+        }
+
+        function endUserGuessing() {
+            guessInput.disabled = true;
+            document.querySelector('#input-section button').disabled = true;
+        }
+
+        // ------------------- Computer Guessing Mode -------------------
+        const computerMessage = document.getElementById('computer-message');
+        const computerNumberBox = document.getElementById('computer-number-box');
+        const computerButtonBox = document.getElementById('computer-button-box');
+        const computerKorom = document.getElementById('computer-korom');
+
+        let computerMin = 1;
+        let computerMax = 1000;
+        let computerGuess;
+
+        const koromSays =  [
+            "Hmmmmm, my magic korom sense tells me your number is...",
+            "Well then, it must be...",
+            "Meow meow meow meow the number is...",
+            "The korom Wizard guesses...",
+            "No??? Well, uh... how about..."
+        ];
+
+        function resetComputerGuessing() {
+            computerMin = 1;
+            computerMax = 1000;
+            computerGuess = Math.floor((computerMin + computerMax) / 2);
+            computerMessage.textContent = "Think of a number between 1 and 1000, and I'll try to guess it!";
+            computerNumberBox.textContent = "";
+            computerButtonBox.style.display = 'none';
+            computerKorom.classList.add('hidden');
+            setTimeout(() => {
+                makeComputerGuess();
+            }, 1000);
+        }
+
+        function makeComputerGuess() {
+            if (computerMin > computerMax) {
+                computerMessage.textContent = "Hmm, something's wrong. Are you sure about your responses?";
+                computerNumberBox.textContent = "";
+                computerButtonBox.style.display = 'none';
+                return;
+            }
+            computerGuess = Math.floor((computerMin + computerMax) / 2);
+            const randomText = koromSays[Math.floor(Math.random() * koromSays.length)];
+            computerNumberBox.textContent = `${randomText} ${computerGuess}?`;
+            computerButtonBox.style.display = 'block';
+        }
+
+        function computerHigher() {
+            computerMin = computerGuess + 1;
+            makeComputerGuess();
+        }
+
+        function computerLower() {
+            computerMax = computerGuess - 1;
+            makeComputerGuess();
+        }
+
+        function computerCorrect() {
+            computerMessage.textContent = "Hooray! I guessed your number!";
+            computerNumberBox.textContent = "";
+            computerButtonBox.style.display = 'none';
+            computerKorom.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
