@@ -74,11 +74,16 @@ let computerMax = 1000;
 let computerGuess;
 
 const koromSays = [
-    "Hmmmmm, my magic korom sense tells me your number is...",
-    "Well then, it must be...",
-    "Meow meow meow meow the number is...",
-    "The korom Wizard guesses...",
-    "No??? Well, uh... how about..."
+    "Oh, I'm TOTALLY psychic. Your number is definitely...",
+    "After extensive calculations and deep meditation, I've decided your number is...",
+    "My genius brain says it's...",
+    "Let me try again. I was just PRETENDING to be wrong before. It's...",
+    "According to my flawless algorithm (aka wild guess)...",
+    "The voices in my head are screaming...",
+    "I'd bet my nonexistent paycheck that it's...",
+    "My crystal ball is a bit foggy, but I think it's showing...",
+    "Eeny, meeny, miny, moe... I choose...",
+    "Look, I'm just a dummy program, but I'm pretty sure it's..."
 ];
 
 function resetComputerGuessing() {
