@@ -1,0 +1,128 @@
+/* ------------------- CSS Reset ------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ------------------- Variables ------------------- */
+:root {
+    --BGreg: 225, 245, 225, 0.95;
+    --BGcorrect: 205, 205, 255, 1;
+    --BGBlack: #000;
+    --koromlight: rgb(229, 83, 52);
+    --button-bg: rgba(238, 180, 185, 0.8);
+    --button-border: rgb(100, 70, 170);
+    --button-hover-border: rgb(60, 30, 130);
+    --header-bg: rgba(143, 176, 163, 0.9);
+    --header-border: rgb(123, 123, 193);
+}
+
+/* ------------------- Global Styles ------------------- */
+body {
+    background-color: rgba(var(--BGreg));
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    color: var(--BGBlack);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: rgba(var(--header-bg));
+    border: 3px solid var(--header-border);
+    padding: 20px;
+    position: relative;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+/* korom Image */
+#korom-zone {
+    position: absolute;
+    top: 80px;
+    right: 80px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#korom-zone img {
+    width: 300px;
+}
+
+/* Main Box */
+#game-container {
+    background-color: rgba(var(--BGreg));
+    border: 3px solid var(--header-border);
+    border-radius: 10px;
+    width: 80%;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Tabs */
+.tab {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    border-radius: 5px 5px 0 0;
+    font-size: 1.2em;
+}
+
+.tab.active {
+    background-color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    padding: 20px;
+    border-top: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Common Elements */
+#korom, #computer-korom {
+    width: 150px;
+    margin: 20px auto;
+    display: none;
+}
+
+#message, #computer-message {
+    font-size: 1.5em;
+    margin: 20px;
+}
+
+#input-section, #computer-input-section {
+    margin: 20px;
+}
+
+input[type="number"] {
+    padding: 10px;
+    font-size: 1em;
+    width: 150px;
+    border: 2px solid var(--button-border);
+    border-radius: 5px;
+}
+
+button {
+    background-color: var(--button-bg);
+    padding: 10px 20px;
+    font-size: 1em;
+    margin: 5px;
+    cursor: pointer;
+    border: 2px solid var(--button-border);
+    border
